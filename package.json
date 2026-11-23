@@ -1,0 +1,11 @@
+{
+  "name": "break-the-qr",
+  "version": "1.0.0",
+  "description": "Break the QR: Vandalise a Code to Learn How It Survives. Global Virtual Hackathon 2026 (Unveiling Technology).",
+  "private": true,
+  "scripts": {
+    "test": "node tests/encoder.test.js",
+    "start": "npx --yes http-server -p 8080 -c-1 ."
+  },
+  "license": "MIT"
+}

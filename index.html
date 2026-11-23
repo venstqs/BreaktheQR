@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Break the QR — Vandalise a Code to Learn How It Survives</title>
+  <meta name="description" content="A playful lab where you scribble on, cover and wreck QR codes to discover their hidden parts and the error correction that keeps them working. Global Virtual Hackathon 2026 · Unveiling Technology." />
+  <meta name="theme-color" content="#F3EFE6" />
+  <meta property="og:title" content="Break the QR: Vandalise a Code to Learn How It Survives" />
+  <meta property="og:description" content="Scribble on a QR code until it breaks, and see the hidden backup system that kept it alive until then. GVH 2026 by CIS." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <a class="skip" href="#lab">Skip to the lab</a>
+  <noscript><p style="background:#FFD23F;padding:12px;margin:0;text-align:center;font-weight:700">Break the QR needs JavaScript turned on. Everything runs on your device.</p></noscript>
+
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Break the QR home">
+      <svg class="brand-mark" viewBox="0 0 28 28" aria-hidden="true">
+        <rect x="1" y="1" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <rect x="4.5" y="4.5" width="3" height="3" fill="currentColor"/>
+        <rect x="17" y="1" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <rect x="20.5" y="4.5" width="3" height="3" fill="currentColor"/>
+        <rect x="1" y="17" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <rect x="4.5" y="20.5" width="3" height="3" fill="currentColor"/>
+        <path d="M15 15 L27 27 M27 15 L15 27" stroke="#FF3D5A" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <span>Break<b>the</b>QR</span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#lab">Lab</a>
+      <a href="#how">How it works</a>
+      <a href="#safety">Check before you tap</a>
+      <a href="#research">Research</a>
+    </nav>
+    <span class="event-tag">GVH 2026 · Unveiling Technology</span>
+  </header>
+
+  <main id="top">
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="kicker">A hands-on lab for anyone aged 10+</p>
+        <h1>Vandalise a code to learn how it <span class="scribble">survives.</span></h1>
+        <p class="lede">You scan QR codes every day, but why does a scratched or logo-covered one still work? Make a code, peel it apart into its hidden layers, then grab a brush and <strong>try to break it</strong>. A live meter shows exactly how much damage the backup system can still repair.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="#lab">Start breaking →</a>
+          <a class="btn btn-ghost btn-lg" href="#how">How does it survive?</a>
+        </div>
+      </div>
+      <ul class="hero-facts" aria-label="Quick facts">
+        <li><b>30%</b><span>of a level-H code can be wrecked and it still scans</span></li>
+        <li><b>8 / 26</b><span>codewords a Version 1-H code can rebuild from scratch</span></li>
+        <li><b>33%</b><span>of a small code is just the three corner “eyes”</span></li>
+        <li><b>0 bytes</b><span>leave your device. Everything runs in your browser</span></li>
+      </ul>
+    </section>
+
+    <!-- ============ LAB ============ -->
+    <section id="lab" class="lab" aria-label="The lab">
+      <div class="stage-col">
+        <div class="stage-card">
+          <div class="stage-head">
+            <div class="chips" id="codeChips" aria-live="polite"></div>
+            <div class="seg seg-sm" role="group" aria-label="View">
+              <button type="button" data-view="plain" class="on">Plain</button>
+              <button type="button" data-view="layers">Layers</button>
+              <button type="button" data-view="xray" title="Outline damaged codewords">X-ray</button>
+            </div>
+          </div>
+          <div class="stage" id="stage">
+            <canvas id="cvBase" width="720" height="720" aria-label="QR code"></canvas>
+            <canvas id="cvVandal" width="720" height="720" aria-hidden="true"></canvas>
+            <canvas id="cvOverlay" width="720" height="720" aria-hidden="true"></canvas>
+            <div class="stage-hint" id="stageHint"></div>
+            <div class="break-banner" id="breakBanner" hidden>
+              <span>💥 BROKEN</span>
+            </div>
+          </div>
+          <!-- live meter -->
+          <div class="meter" id="meter">
+            <div class="meter-top">
+              <span class="meter-label">Damage meter</span>
+              <span class="meter-status" id="meterStatus" aria-live="polite">Healthy</span>
+            </div>
+            <div class="meter-bar" id="meterBar" role="meter" aria-label="Repairable codewords used" aria-valuemin="0"></div>
+            <div class="meter-text" id="meterText">0 of 8 repairable codewords used</div>
+            <div class="meter-blocks" id="meterBlocks"></div>
+            <div class="checks">
+              <div class="check" id="checkMeter"><span class="dot"></span><span><b>Our meter:</b> <em>—</em></span></div>
+              <div class="check" id="checkJs"><span class="dot"></span><span><b>Real decoder (jsQR):</b> <em>—</em></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-col">
+        <div class="tabs" role="tablist" aria-label="Lab steps">
+          <button role="tab" type="button" aria-controls="panel-make" data-tab="make" class="on"><i>1</i>Make</button>
+          <button role="tab" type="button" aria-controls="panel-layers" data-tab="layers"><i>2</i>Layers</button>
+          <button role="tab" type="button" aria-controls="panel-order" data-tab="order"><i>3</i>Read order</button>
+          <button role="tab" type="button" aria-controls="panel-vandal" data-tab="vandal"><i>4</i>Vandalise</button>
+          <button role="tab" type="button" aria-controls="panel-levels" data-tab="levels"><i>5</i>Levels</button>
+          <button role="tab" type="button" aria-controls="panel-graffiti" data-tab="graffiti"><i>6</i>Graffiti</button>
+        </div>
+
+        <!-- 1. MAKE -->
+        <div class="panel" role="tabpanel" id="panel-make" data-panel="make">
+          <h2>1 · Make or scan a code</h2>
+          <p class="muted">Type anything: a link, a message, your name. We build the QR code ourselves, square by square, so we know what every single module does.</p>
+          <label class="field">
+            <span>What should the code say?</span>
+            <textarea id="txtInput" rows="2" maxlength="300" spellcheck="false">https://example.com/gvh</textarea>
+            <small id="txtInfo" class="muted"></small>
+          </label>
+          <div class="examples" id="examples">
+            <button type="button" class="chip-btn" data-ex="HI">“HI”</button>
+            <button type="button" class="chip-btn" data-ex="https://example.com/gvh">A website link</button>
+            <button type="button" class="chip-btn" data-ex="Meet at the library, 3pm. Bring snacks 🍪">A message</button>
+            <button type="button" class="chip-btn" data-ex="Error correction is one of the most important ideas in computing: the same maths protects phone calls, satellite photos, CDs and the data on your storage drive.">Something long</button>
+          </div>
+          <div class="field">
+            <span>Error-correction level <small class="muted">(how much backup to add)</small></span>
+            <div class="seg" role="group" aria-label="Level" id="levelSeg">
+              <button type="button" data-level="L">L <small>7%</small></button>
+              <button type="button" data-level="M">M <small>15%</small></button>
+              <button type="button" data-level="Q">Q <small>25%</small></button>
+              <button type="button" data-level="H" class="on">H <small>30%</small></button>
+            </div>
+          </div>
+          <label class="field">
+            <span>Smallest grid size: <b id="verLabel">auto</b></span>
+            <input type="range" id="verRange" min="1" max="10" value="1" />
+            <small class="muted">Version 1 is 21×21 squares; every version adds 4 more squares per side. Bigger links need bigger grids.</small>
+          </label>
+          <div class="divider"><span>or read an existing code</span></div>
+          <div class="row">
+            <button type="button" class="btn" id="btnCamera">📷 Scan with camera</button>
+            <label class="btn" for="fileInput">🖼️ Upload a photo</label>
+            <input type="file" id="fileInput" accept="image/*" hidden />
+          </div>
+          <div id="scanResult"></div>
+          <p class="note">🔒 Camera frames and photos are processed on your device and never uploaded.</p>
+          <button type="button" class="btn btn-primary next" data-goto="layers">Next: peel it apart →</button>
+        </div>
+
+        <!-- 2. LAYERS -->
+        <div class="panel" role="tabpanel" id="panel-layers" data-panel="layers" hidden>
+          <h2>2 · Peel it into layers</h2>
+          <p class="muted">A QR code isn't random noise. Every square has a job. Untick a layer to peel it away. <b>Tap any square</b> on the code to find out what it does.</p>
+          <div class="legend" id="legend"></div>
+          <div class="info-card" id="moduleInfo">
+            <p class="muted">👆 Tap a square on the code.</p>
+          </div>
+          <details class="more">
+            <summary>Why are some squares “flipped”?</summary>
+            <p>Before printing, the code is <b>masked</b>: a fixed pattern (one of 8) flips some data squares so there are no big blank areas or fake “eyes” that would confuse a scanner. The format label tells the scanner which mask to undo. Tap a data square to see whether it was flipped.</p>
+          </details>
+          <button type="button" class="btn btn-primary next" data-goto="order">Next: how a scanner reads it →</button>
+        </div>
+
+        <!-- 3. READ ORDER -->
+        <div class="panel" role="tabpanel" id="panel-order" data-panel="order" hidden>
+          <h2>3 · The zig-zag read order</h2>
+          <p class="muted">Data is written in 8-square bundles called <b>codewords</b>. They snake upward and downward in 2-square-wide columns, starting at the bottom-right corner and dodging the eyes and rulers.</p>
+          <div class="player">
+            <button type="button" class="btn btn-icon" id="btnPlay" aria-label="Play">▶</button>
+            <input type="range" id="orderRange" min="0" max="26" value="0" aria-label="Codeword position" />
+            <span class="mono" id="orderCount">0 / 26</span>
+          </div>
+          <label class="field inline">
+            <span>Speed</span>
+            <input type="range" id="speedRange" min="1" max="10" value="4" />
+          </label>
+          <div class="info-card" id="orderInfo"><p class="muted">Press ▶ to watch the scanner's path.</p></div>
+          <div class="bytes" id="bytesStrip" aria-label="Characters in the code"></div>
+          <p class="note" id="interleaveNote"></p>
+          <button type="button" class="btn btn-primary next" data-goto="vandal">Next: wreck it →</button>
+        </div>
+
+        <!-- 4. VANDAL -->
+        <div class="panel" role="tabpanel" id="panel-vandal" data-panel="vandal" hidden>
+          <h2>4 · Vandal mode</h2>
+          <p class="muted">Scribble, paint, slap stickers on it. Every stroke updates the meter. How much can you wreck before the code dies?</p>
+          <div class="tools" id="toolsHost"></div>
+          <div class="presets">
+            <span class="muted small">Try a real-world accident:</span>
+            <div class="row wrap">
+              <button type="button" class="chip-btn" data-preset="logo">🏷️ Logo in the middle</button>
+              <button type="button" class="chip-btn" data-preset="coffee">☕ Coffee stain</button>
+              <button type="button" class="chip-btn" data-preset="tear">📄 Torn corner</button>
+              <button type="button" class="chip-btn" data-preset="scratch">🔑 Key scratches</button>
+              <button type="button" class="chip-btn" data-preset="eye">👁️ Cover an eye</button>
+              <button type="button" class="chip-btn" data-preset="random">🎲 Random splats</button>
+            </div>
+          </div>
+          <div class="record" id="record"></div>
+          <div class="break-card" id="breakCard" hidden></div>
+          <button type="button" class="btn btn-primary next" data-goto="levels">Next: compare levels →</button>
+        </div>
+
+        <!-- 5. LEVELS -->
+        <div class="panel" role="tabpanel" id="panel-levels" data-panel="levels" hidden>
+          <h2>5 · Same damage, four levels</h2>
+          <p class="muted">More backup means a denser grid but a tougher code. Here is <b>your exact vandalism</b> applied to the same message at each level.</p>
+          <div class="levels" id="levelsGrid"></div>
+          <p class="insight" id="levelsInsight"></p>
+          <button type="button" class="btn btn-primary next" data-goto="graffiti">Next: graffiti that still scans →</button>
+        </div>
+
+        <!-- 6. GRAFFITI -->
+        <div class="panel" role="tabpanel" id="panel-graffiti" data-panel="graffiti" hidden>
+          <h2>6 · Graffiti QR</h2>
+          <p class="muted">Designers put art on QR codes all the time. Now you know the trick: stay inside the repair budget, and keep the eyes and format label clean. Draw on a level-H code, then <b>scan it with a real phone</b>.</p>
+          <ol class="tips">
+            <li><b>Colour matters:</b> a scanner sees only dark or light. Each swatch below shows how a scanner reads it.</li>
+            <li><b>Dark on dark, light on light</b> costs nothing. Paint yellow over white squares and navy over black ones for free.</li>
+            <li><b>Never touch the eyes.</b> Without all three, nothing else matters.</li>
+          </ol>
+          <button type="button" class="btn" id="btnGraffitiStart">🎨 Start a fresh level-H canvas</button>
+          <div class="tools" id="toolsHost2"></div>
+          <div class="row">
+            <button type="button" class="btn btn-primary" id="btnBig">📱 Show big for phone scanning</button>
+            <button type="button" class="btn" id="btnDownload">⬇️ Save as PNG</button>
+          </div>
+          <a class="safety-teaser" href="#safety">
+            <b>Before you scan anything: a code is just a link in disguise.</b>
+            <span>Learn the 10-second check that beats “quishing” scams →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section id="how" class="section">
+      <div class="section-head">
+        <p class="kicker">Unveiling the technology</p>
+        <h2>How a QR code survives</h2>
+      </div>
+      <div class="how-grid">
+        <article class="how-card">
+          <span class="how-num">01</span>
+          <h3>Find it</h3>
+          <p>The three <span class="tag t-finder">eyes</span> have a 1 : 1 : 3 : 1 : 1 ring pattern that looks the same from any angle. Scanners look for them first, then use the <span class="tag t-timing">timing rulers</span> and <span class="tag t-alignment">alignment target</span> to map the grid, even when it's tilted.</p>
+        </article>
+        <article class="how-card">
+          <span class="how-num">02</span>
+          <h3>Read the label</h3>
+          <p>The <span class="tag t-format">format label</span> is 15 bits saying which error-correction level and mask were used. It's stored <b>twice</b> and has its own mini error correction, so it can lose 3 bits per copy.</p>
+        </article>
+        <article class="how-card">
+          <span class="how-num">03</span>
+          <h3>Collect codewords</h3>
+          <p>The scanner walks the zig-zag path, gathering 8-bit <span class="tag t-data">data</span> and <span class="tag t-ec">backup</span> codewords. Longer codes split them into <b>blocks</b> and shuffle the blocks together, so one scratch spreads its damage thinly.</p>
+        </article>
+        <article class="how-card">
+          <span class="how-num">04</span>
+          <h3>Repair the damage</h3>
+          <p>The backup codewords are <b>Reed–Solomon</b> checksums, the same maths that protects satellite photos, CDs and phone calls. With <i>2k</i> backup codewords a scanner can find <i>and</i> fix <i>k</i> broken ones, without knowing in advance which ones are broken.</p>
+        </article>
+      </div>
+
+      <div class="explorer">
+        <div class="explorer-head">
+          <h3>Version explorer</h3>
+          <label class="field inline"><span>Version <b id="exVerLabel">1</b></span><input type="range" id="exVer" min="1" max="10" value="1" /></label>
+        </div>
+        <div class="explorer-grid" id="explorerGrid"></div>
+        <p class="muted small">Numbers come from the QR Code specification (ISO/IEC 18004) and our own calculations: grid = (17 + 4v)², eyes = 3 × 7 × 7 = 147 modules, repair limit = backup codewords per block ÷ 2.</p>
+      </div>
+
+      <div class="figures">
+        <h3>Engineering figures behind the meter</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Parameter</th><th>Value</th><th>How it is worked out</th></tr></thead>
+            <tbody>
+              <tr><td>Grid size of a Version v code</td><td>(17 + 4v) × (17 + 4v)</td><td>Version 1 = 21 × 21 = 441 modules</td></tr>
+              <tr><td>Version 3 grid</td><td>29 × 29 = 841 modules</td><td>17 + 4 × 3 = 29</td></tr>
+              <tr><td>Area taken by the three finder eyes</td><td>147 modules</td><td>3 × (7 × 7)</td></tr>
+              <tr><td>Share of a Version 1 code that is eyes</td><td>33.3%</td><td>147 ÷ 441</td></tr>
+              <tr><td>Share of a Version 3 code that is eyes</td><td>17.5%</td><td>147 ÷ 841</td></tr>
+              <tr><td>Repair power by level</td><td>L ≈ 7%, M ≈ 15%, Q ≈ 25%, H ≈ 30%</td><td>QR specification</td></tr>
+              <tr><td>Version 1-H codewords</td><td>26 total: 9 data + 17 backup</td><td>Repairs up to 8 (17 ÷ 2, rounded down)</td></tr>
+              <tr><td>Bytes a Version 3 code holds</td><td>L 53, M 42, Q 32, H 24</td><td>QR specification capacity table</td></tr>
+              <tr><td>A 24-character web address</td><td>Fits Version 3 even at level H</td><td>24 ≤ 24 bytes</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SAFETY ============ -->
+    <section id="safety" class="section safety">
+      <div class="section-head">
+        <p class="kicker">Digital safety</p>
+        <h2>Check before you tap</h2>
+        <p class="lede">A QR code is <b>just a link in disguise</b>. “Quishing” (QR phishing) scams stick fake codes over real ones on parking meters, posters and emails. They work because we trust the place, scan out of habit, can't see the link, and don't check it.</p>
+      </div>
+      <div class="safety-grid">
+        <ol class="steps">
+          <li><b>Pause.</b> Is this code where you'd expect it? Is it a sticker on top of another one?</li>
+          <li><b>Read the preview.</b> Your camera shows the link before opening it. Read the <u>domain</u>, the part just before the first single “/”.</li>
+          <li><b>Spot the tricks:</b> misspellings (paypa1), extra words (bank-secure-login.xyz), link shorteners, or no “https”.</li>
+          <li><b>Never</b> type passwords or payment details on a page you reached from a random code. Go to the official app or website instead.</li>
+        </ol>
+        <div class="xray-card">
+          <h3>🔎 Link X-ray</h3>
+          <p class="muted small">Paste a link, or scan a code in step 1, to see what's really inside.</p>
+          <div class="row">
+            <input id="xrayInput" class="input" type="text" placeholder="https://paypal.com.secure-login.example/verify" spellcheck="false" />
+            <button type="button" class="btn btn-primary" id="xrayBtn">X-ray</button>
+          </div>
+          <div class="row wrap examples-small">
+            <button type="button" class="chip-btn" data-xray="https://paypal.com.account-verify.example/login">Lookalike</button>
+            <button type="button" class="chip-btn" data-xray="http://192.168.4.20/pay">IP address</button>
+            <button type="button" class="chip-btn" data-xray="https://bit.ly/3xYz">Shortener</button>
+            <button type="button" class="chip-btn" data-xray="https://www.example.com/menu">Looks fine</button>
+          </div>
+          <div id="xrayOut"></div>
+          <p class="note">General safety advice, not a security product. A clean result does not prove a link is safe.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RESEARCH ============ -->
+    <section id="research" class="section">
+      <div class="section-head">
+        <p class="kicker">Evidence</p>
+        <h2>The problem in numbers</h2>
+        <p class="lede">QR codes now carry payments, logistics, safety systems and log-ins, yet users see only black and white squares. Research focuses heavily on technical defences, while far fewer studies look at what users understand. That is the gap this project targets.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>95.35%</b><span>recognition of an AI repair model on <i>mildly</i> contaminated codes</span><cite>Zheng et al., 2023</cite></div>
+        <div class="stat"><b>31.94%</b><span>for the same model on <i>randomly</i> contaminated codes. <em>Where</em> the damage lands matters</span><cite>Zheng et al., 2023</cite></div>
+        <div class="stat"><b>16 vs 5</b><span>quishing studies on technical detection vs user behaviour (27 included from 71 screened)</span><cite>Filio-Aguilar et al., 2026</cite></div>
+        <div class="stat"><b>4 vs 9</b><span>operations per window sum with integral images, a trick for reading codes in uneven light</span><cite>Chen et al., 2023</cite></div>
+      </div>
+
+      <div class="evidence">
+        <details open>
+          <summary>Why real codes fail to scan</summary>
+          <ul>
+            <li><b>Chen et al. (2023):</b> fast adaptive binarisation in uneven light for logistics. Why shadows cause failures.</li>
+            <li><b>Yang et al. (2023):</b> CNN-based reading of packages from drones. Distance and angle challenges.</li>
+            <li><b>Kinz et al. (2026):</b> robust detection in oblique aerial images. Viewing angle is a real problem.</li>
+            <li><b>Li et al. (2026):</b> fast motion deblurring of QR codes. Why shaky photos fail.</li>
+            <li><b>Majnarić et al. (2026):</b> print quality of QR elements from thermal transfer printing. Why printed codes degrade.</li>
+            <li><b>Zheng et al. (2023):</b> a GAN that restores damaged codes (95.35% vs 31.94%).</li>
+            <li><b>San Agustin-Crescencio et al. (2025):</b> protection and recovery with encryption and colour multiplexing.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Where people already meet QR codes</summary>
+          <ul>
+            <li><b>Ramli et al. (2023):</b> brand equity and usage intention of QR-code e-wallets. QR payments are mainstream.</li>
+            <li><b>Bhatia &amp; Albarrak (2023):</b> QR codes with blockchain for food supply-chain tracking.</li>
+            <li><b>Kuo &amp; Lin (2025):</b> QR-enabled fire-rescue notification in smart buildings.</li>
+            <li><b>Mustafa &amp; Sarkar (2026):</b> secure QR attendance over low-power IoT networks.</li>
+            <li><b>Abbas &amp; Wang (2025):</b> two-factor authentication built on QR prompts.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Art that still scans (the science behind Graffiti mode)</summary>
+          <ul>
+            <li><b>Tsai &amp; Peng (2023):</b> QR beautification by instance segmentation.</li>
+            <li><b>Rathi &amp; Grewal (2025):</b> masked convolutional network for QR beautification.</li>
+            <li><b>Wu et al. (2024):</b> Text2QR, text-guided aesthetic codes that stay scannable.</li>
+            <li><b>Liao et al. (2025):</b> DiffQRCoder, diffusion-based aesthetic codes guided by scanning robustness.</li>
+            <li><b>Kamnounsing et al. (2024):</b> adversarial halftone QR codes look different yet scan.</li>
+            <li><b>Wu &amp; Wu (2026):</b> hiding information by adjusting module corners.</li>
+            <li><b>Wang et al. (2023):</b> texture-hidden anti-counterfeiting QR codes.</li>
+            <li><b>Tsai et al. (2023):</b> CNNs can tell which printer printed a code. Printed codes carry hidden traces.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Quishing and defences</summary>
+          <ul>
+            <li><b>Filio-Aguilar et al. (2026):</b> systematic review: 27 studies, mostly technical. Users need explanation, not just detection tools.</li>
+            <li><b>Akram et al. (2025):</b> a QR-based browser-in-the-browser phishing attack.</li>
+            <li><b>Barron &amp; Sharma (2026):</b> self-authenticating dual-modulated QR codes against quishing.</li>
+            <li><b>Tashtoush et al. (2025):</b> machine learning vs deep learning for QR phishing detection.</li>
+            <li><b>Woo et al. (2026):</b> on-device QR phishing detection using WebView analysis.</li>
+            <li><b>Yalda et al. (2026):</b> blockchain framework for secure QR verification.</li>
+            <li><b>Papathanasiou et al. (2024):</b> QR codes to prevent business email compromise. QR as a security tool.</li>
+            <li><b>Alsuhibany (2025):</b> tamper-proof QR generation and fraud-resistant verification.</li>
+          </ul>
+        </details>
+      </div>
+
+      <div class="limits">
+        <h3>Limits we state openly</h3>
+        <ul>
+          <li>The meter is a <b>teaching model</b>. Real scanners can also fail from blur, glare or low contrast, which we mention but don't fully simulate.</li>
+          <li>Damage is counted per codeword. In rare layouts the true decoder may succeed or fail slightly differently, which is why <b>every result is double-checked with jsQR</b>.</li>
+          <li>Eye damage is judged with a simple rule (pupil + ring squares changed); real finder detection is more subtle.</li>
+          <li>No scanned content is uploaded or stored. Camera frames stay on the device.</li>
+          <li>The quishing tip is general safety advice, not a security product.</li>
+        </ul>
+      </div>
+
+      <details class="refs">
+        <summary>References (APA 7)</summary>
+        <ol>
+          <li>Abbas, M., &amp; Wang, R.-Z. (2025). A novel two-factor authentication scheme based on QR code prompt. <i>Symmetry, 18</i>(1), 69. <a href="https://doi.org/10.3390/sym18010069">https://doi.org/10.3390/sym18010069</a></li>
+          <li>Akram, M. W., Sood, K., Ul Hassan, M., &amp; Subba, B. (2025). Exemplifying emerging phishing: QR-based browser-in-the-browser (BiTB) attack. <i>IEEE Networking Letters, 7</i>(4), 274–278. <a href="https://doi.org/10.1109/lnet.2025.3605640">https://doi.org/10.1109/lnet.2025.3605640</a></li>
+          <li>Alsuhibany, S. A. (2025). Innovative QR code system for tamper-proof generation and fraud-resistant verification. <i>Sensors, 25</i>(13), 3855. <a href="https://doi.org/10.3390/s25133855">https://doi.org/10.3390/s25133855</a></li>
+          <li>Barron, I. R., &amp; Sharma, G. (2026). Quashing quishing attacks using self-authenticating dual-modulated QR codes. <i>IEEE Security &amp; Privacy, 24</i>(1), 26–34. <a href="https://doi.org/10.1109/msec.2025.3530487">https://doi.org/10.1109/msec.2025.3530487</a></li>
+          <li>Bhatia, S., &amp; Albarrak, A. S. (2023). A blockchain-driven food supply chain management using QR code and XAI-Faster RCNN architecture. <i>Sustainability, 15</i>(3), 2579. <a href="https://doi.org/10.3390/su15032579">https://doi.org/10.3390/su15032579</a></li>
+          <li>Chen, R., Li, W., Lan, K., Xiao, J., Wang, L., &amp; Lu, X. (2023). Fast adaptive binarization of QR code images for automatic sorting in logistics systems. <i>Electronics, 12</i>(2), 286. <a href="https://doi.org/10.3390/electronics12020286">https://doi.org/10.3390/electronics12020286</a></li>
+          <li>Filio-Aguilar, P.-D., Mil-Martínez, R., &amp; López-García, L. (2026). Quishing: A sociotechnical framework for understanding QR-code phishing risks and user-centered protection strategies. <i>Journal of Cybersecurity and Privacy, 6</i>(4), 134. <a href="https://doi.org/10.3390/jcp6040134">https://doi.org/10.3390/jcp6040134</a></li>
+          <li>Kamnounsing, P., Sumongkayothin, K., Siritanawan, P., &amp; Kotani, K. (2024). Adversarial halftone QR code. <i>IEEE Access, 12</i>, 126729–126737. <a href="https://doi.org/10.1109/access.2024.3405408">https://doi.org/10.1109/access.2024.3405408</a></li>
+          <li>Kinz, G., Bürstmayr, H., &amp; Roth, P. M. (2026). Robust QR code detection in oblique aerial images for agricultural field experiments. <i>Remote Sensing, 18</i>(19), 3361. <a href="https://doi.org/10.3390/rs18193361">https://doi.org/10.3390/rs18193361</a></li>
+          <li>Kuo, T.-W., &amp; Lin, C.-Y. (2025). Smart building technologies for fire rescue: A QR code-enabled notification system. <i>Fire, 8</i>(3), 114. <a href="https://doi.org/10.3390/fire8030114">https://doi.org/10.3390/fire8030114</a></li>
+          <li>Li, J., Guo, D., Li, W., &amp; Zhao, W. (2026). An adaptive edge-guided dual-network framework for fast QR code motion deblurring. <i>Sensors, 26</i>(15), 4879. <a href="https://doi.org/10.3390/s26154879">https://doi.org/10.3390/s26154879</a></li>
+          <li>Liao, J.-W., Wang, W., Wang, T.-S., Peng, L.-X., Weng, J.-H., Chou, C.-F., &amp; Chen, J.-C. (2025). DiffQRCoder: Diffusion-based aesthetic QR code generation with scanning robustness guided iterative refinement. In <i>2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)</i> (pp. 5916–5925). IEEE. <a href="https://doi.org/10.1109/wacv61041.2025.00577">https://doi.org/10.1109/wacv61041.2025.00577</a></li>
+          <li>Majnarić, I., Jelkić, M., Morić, M., &amp; Hajdek, K. (2026). Print quality assessment of QR code elements achieved by the digital thermal transfer process. <i>Journal of Imaging, 12</i>(2), 86. <a href="https://doi.org/10.3390/jimaging12020086">https://doi.org/10.3390/jimaging12020086</a></li>
+          <li>Mustafa, R., &amp; Sarkar, N. I. (2026). Secure QR code attendance over RPL-based low-power IoT networks: Security analysis and scalability evaluation in Contiki-NG/Cooja. <i>Electronics, 15</i>(21), 4930. <a href="https://doi.org/10.3390/electronics15214930">https://doi.org/10.3390/electronics15214930</a></li>
+          <li>Papathanasiou, A., Liontos, G., Paparis, G., Liagkou, V., &amp; Glavas, E. (2024). BEC defender: QR code-based methodology for prevention of business email compromise (BEC) attacks. <i>Sensors, 24</i>(5), 1676. <a href="https://doi.org/10.3390/s24051676">https://doi.org/10.3390/s24051676</a></li>
+          <li>Ramli, F. A. A., Hamzah, M. I., Wahab, S. N., &amp; Shekhar, R. (2023). Modeling the brand equity and usage intention of QR-code e-wallets. <i>FinTech, 2</i>(2), 205–220. <a href="https://doi.org/10.3390/fintech2020013">https://doi.org/10.3390/fintech2020013</a></li>
+          <li>Rathi, J., &amp; Grewal, S. K. (2025). An effective two-dimensional code instance dollmaker masked convolutional network for QR code beautification. <i>Knowledge-Based Systems, 329</i>, 114329. <a href="https://doi.org/10.1016/j.knosys.2025.114329">https://doi.org/10.1016/j.knosys.2025.114329</a></li>
+          <li>San Agustin-Crescencio, P. N., Hernandez-Gonzalez, L., Guevara-Lopez, P., Juarez-Sandoval, O. U., Ramirez-Hernandez, J., &amp; Estevez-Encarnacion, E. S. (2025). A comprehensive QR code protection and recovery system using secure encryption, chromatic multiplexing, and wavelength-based decoding. <i>Applied Sciences, 15</i>(17), 9708. <a href="https://doi.org/10.3390/app15179708">https://doi.org/10.3390/app15179708</a></li>
+          <li>Tashtoush, Y., Khashim, M., &amp; Alsaedi, N. (2025). Comparing machine learning and deep learning models for QR code phishing detection. In <i>2025 International Conference on Cybersecurity and AI-Based Systems (Cyber-AI)</i> (pp. 291–297). IEEE. <a href="https://doi.org/10.1109/cyber-ai66431.2025.11233820">https://doi.org/10.1109/cyber-ai66431.2025.11233820</a></li>
+          <li>Tsai, M.-J., Lee, Y.-C., &amp; Chen, T.-M. (2023). Implementing deep convolutional neural networks for QR code-based printed source identification. <i>Algorithms, 16</i>(3), 160. <a href="https://doi.org/10.3390/a16030160">https://doi.org/10.3390/a16030160</a></li>
+          <li>Tsai, M.-J., &amp; Peng, S.-L. (2023). QR code beautification by instance segmentation (IS-QR). <i>Digital Signal Processing, 133</i>, 103887. <a href="https://doi.org/10.1016/j.dsp.2022.103887">https://doi.org/10.1016/j.dsp.2022.103887</a></li>
+          <li>Wang, T., Zheng, H., You, C., &amp; Ju, J. (2023). A texture-hidden anti-counterfeiting QR code and authentication method. <i>Sensors, 23</i>(2), 795. <a href="https://doi.org/10.3390/s23020795">https://doi.org/10.3390/s23020795</a></li>
+          <li>Woo, J., Lee, S., Park, I., &amp; Lee, S. (2026). WebView-based hybrid analysis of link and event for on-device QR phishing detection framework. <i>Sensors, 26</i>(14), 4412. <a href="https://doi.org/10.3390/s26144412">https://doi.org/10.3390/s26144412</a></li>
+          <li>Wu, D.-C., &amp; Wu, Y.-M. (2026). Information hiding in QR code images via module content modification based on corner-pixel grayscale adjustment. <i>Applied Sciences, 16</i>(17), 8498. <a href="https://doi.org/10.3390/app16178498">https://doi.org/10.3390/app16178498</a></li>
+          <li>Wu, G., Liu, X., Jia, J., Cui, X., &amp; Zhai, G. (2024). Text2QR: Harmonizing aesthetic customization and scanning robustness for text-guided QR code generation. In <i>2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</i> (pp. 8456–8465). IEEE. <a href="https://doi.org/10.1109/cvpr52733.2024.00808">https://doi.org/10.1109/cvpr52733.2024.00808</a></li>
+          <li>Yalda, R., Khan, A., &amp; Nepal, N. (2026). B-PhishQR: A blockchain-based framework for secure QR code verification against phishing attacks. <i>Telematics and Informatics Reports, 21</i>, 100289. <a href="https://doi.org/10.1016/j.teler.2025.100289">https://doi.org/10.1016/j.teler.2025.100289</a></li>
+          <li>Yang, S.-Y., Jan, H.-C., Chen, C.-Y., &amp; Wang, M.-S. (2023). CNN-based QR code reading of package for unmanned aerial vehicle. <i>Sensors, 23</i>(10), 4707. <a href="https://doi.org/10.3390/s23104707">https://doi.org/10.3390/s23104707</a></li>
+          <li>Zheng, J., Zhao, R., Lin, Z., Liu, S., Zhu, R., Zhang, Z., Fu, Y., &amp; Lu, J. (2023). EHFP-GAN: Edge-enhanced hierarchical feature pyramid network for damaged QR code reconstruction. <i>Mathematics, 11</i>(20), 4349. <a href="https://doi.org/10.3390/math11204349">https://doi.org/10.3390/math11204349</a></li>
+        </ol>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <b>Break the QR</b> · by CIS · Global Virtual Hackathon 2026 · Theme: <i>Unveiling Technology</i><br/>
+      Built with plain HTML, CSS and JavaScript. QR encoder, module role map, codeword mapper and damage meter written by the team.
+    </div>
+    <div class="small muted">
+      Independent decoder: <a href="https://github.com/cozmo/jsQR">jsQR</a> (Apache-2.0, <a href="vendor/jsQR-LICENSE.txt">licence</a>). QR Code is a registered trademark of DENSO WAVE INCORPORATED.
+    </div>
+  </footer>
+
+  <!-- camera modal -->
+  <dialog id="camDialog" class="modal">
+    <div class="modal-head"><b>Point your camera at a QR code</b><button type="button" class="btn btn-icon" data-close aria-label="Close">✕</button></div>
+    <div class="cam-wrap">
+      <video id="camVideo" playsinline muted></video>
+      <div class="cam-frame"></div>
+    </div>
+    <p class="muted small" id="camStatus">Starting camera…</p>
+  </dialog>
+
+  <!-- big view modal -->
+  <dialog id="bigDialog" class="modal modal-big">
+    <div class="modal-head"><b>Scan me with your phone 📱</b><button type="button" class="btn btn-icon" data-close aria-label="Close">✕</button></div>
+    <canvas id="bigCanvas" width="720" height="720"></canvas>
+    <p class="muted small">Turn your screen brightness up. Did your phone read it? Then your art stayed inside the repair budget.</p>
+  </dialog>
+
+  <script src="vendor/jsQR.js"></script>
+  <script src="js/qr-core.js"></script>
+  <script src="js/qr-damage.js"></script>
+  <script src="js/link-xray.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
