@@ -7,5 +7,22 @@
     "test": "node tests/encoder.test.js",
     "start": "npx --yes http-server -p 8080 -c-1 ."
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/venstqs/BreaktheQR.git"
+  },
+  "homepage": "https://venstqs.github.io/BreaktheQR/",
+  "bugs": {
+    "url": "https://github.com/venstqs/BreaktheQR/issues"
+  },
+  "keywords": [
+    "qr-code",
+    "reed-solomon",
+    "error-correction",
+    "interactive-lab",
+    "education",
+    "hackathon",
+    "gvh2026"
+  ],
   "license": "MIT"
 }

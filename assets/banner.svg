@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400" role="img" aria-label="Break the QR — Vandalise a Code to Learn How It Survives">
+  <defs>
+    <pattern id="paperDots" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="1.3" fill="#141414" fill-opacity="0.09"/>
+    </pattern>
+  </defs>
+
+  <!-- Outer Paper Background -->
+  <rect x="4" y="4" width="1192" height="392" rx="22" fill="#F3EFE6" stroke="#141414" stroke-width="4"/>
+  <rect x="6" y="6" width="1188" height="388" rx="20" fill="url(#paperDots)"/>
+
+  <!-- Top-left GVH 2026 Event Badge -->
+  <g transform="translate(56, 44)">
+    <rect x="3" y="3" width="334" height="34" rx="8" fill="#141414"/>
+    <rect x="0" y="0" width="334" height="34" rx="8" fill="#FFD23F" stroke="#141414" stroke-width="2.5"/>
+    <text x="167" y="22" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, Consolas, monospace" font-size="13.5" font-weight="700" fill="#141414" letter-spacing="0.8">GVH 2026 · UNVEILING TECHNOLOGY</text>
+  </g>
+
+  <!-- Brand Lockup: Mini Logo + Title -->
+  <g transform="translate(56, 108)">
+    <!-- Mini Brand Mark -->
+    <rect x="4" y="4" width="68" height="68" rx="12" fill="#141414"/>
+    <rect x="0" y="0" width="68" height="68" rx="12" fill="#FFFDF8" stroke="#141414" stroke-width="3"/>
+    <g fill="none" stroke="#141414" stroke-width="4.5">
+      <rect x="10" y="10" width="19" height="19" rx="2"/>
+      <rect x="39" y="10" width="19" height="19" rx="2"/>
+      <rect x="10" y="39" width="19" height="19" rx="2"/>
+    </g>
+    <g fill="#141414">
+      <rect x="16.5" y="16.5" width="6" height="6" rx="1"/>
+      <rect x="45.5" y="16.5" width="6" height="6" rx="1"/>
+      <rect x="16.5" y="45.5" width="6" height="6" rx="1"/>
+    </g>
+    <path d="M39 39 L58 58 M58 39 L39 58" stroke="#FF3D5A" stroke-width="6.5" stroke-linecap="round"/>
+
+    <!-- Wordmark -->
+    <text x="90" y="54" font-family="'Archivo Black', 'Arial Black', system-ui, sans-serif" font-size="60" font-weight="900" fill="#141414" letter-spacing="-1.5">Break<tspan fill="#FF3D5A" font-size="44" dx="4" dy="-4">the</tspan><tspan fill="#141414" font-size="60" dx="4" dy="4">QR</tspan></text>
+  </g>
+
+  <!-- Tagline -->
+  <text x="56" y="226" font-family="'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="25" font-weight="700" fill="#141414">Vandalise a code to learn how it survives.</text>
+  <text x="56" y="260" font-family="'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="16.5" font-weight="500" fill="#4B4844">Scribble, spray, and peel apart QR codes to watch Reed-Solomon</text>
+  <text x="56" y="284" font-family="'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="16.5" font-weight="500" fill="#4B4844">error correction repair real-time damage right in your browser.</text>
+
+  <!-- Bottom Feature Pills -->
+  <g transform="translate(56, 318)" font-family="'JetBrains Mono', ui-monospace, Consolas, monospace" font-size="12.5" font-weight="700">
+    <!-- Pill 1 -->
+    <rect x="2" y="2" width="152" height="32" rx="8" fill="#141414"/>
+    <rect x="0" y="0" width="152" height="32" rx="8" fill="#FFFDF8" stroke="#141414" stroke-width="2"/>
+    <circle cx="18" cy="16" r="5" fill="#2563EB"/>
+    <text x="32" y="20.5" fill="#141414">ISO/IEC 18004</text>
+
+    <!-- Pill 2 -->
+    <g transform="translate(166, 0)">
+      <rect x="2" y="2" width="158" height="32" rx="8" fill="#141414"/>
+      <rect x="0" y="0" width="158" height="32" rx="8" fill="#FFFDF8" stroke="#141414" stroke-width="2"/>
+      <circle cx="18" cy="16" r="5" fill="#16A34A"/>
+      <text x="32" y="20.5" fill="#141414">REED-SOLOMON</text>
+    </g>
+
+    <!-- Pill 3 -->
+    <g transform="translate(338, 0)">
+      <rect x="2" y="2" width="176" height="32" rx="8" fill="#141414"/>
+      <rect x="0" y="0" width="176" height="32" rx="8" fill="#FFFDF8" stroke="#141414" stroke-width="2"/>
+      <circle cx="18" cy="16" r="5" fill="#FF3D5A"/>
+      <text x="32" y="20.5" fill="#141414">100% CLIENT-SIDE</text>
+    </g>
+  </g>
+
+  <!-- Right Side: Stylized Interactive Lab Stage Preview Card -->
+  <g transform="translate(766, 36)">
+    <!-- Hard Shadow -->
+    <rect x="8" y="8" width="376" height="328" rx="18" fill="#141414"/>
+    <!-- Card -->
+    <rect x="0" y="0" width="376" height="328" rx="18" fill="#FFFDF8" stroke="#141414" stroke-width="3"/>
+
+    <!-- Card Header Chips -->
+    <g transform="translate(18, 16)" font-family="'JetBrains Mono', ui-monospace, Consolas, monospace" font-size="11" font-weight="700">
+      <rect x="0" y="0" width="70" height="24" rx="6" fill="#E9E3D6" stroke="#141414" stroke-width="1.5"/>
+      <text x="35" y="16" text-anchor="middle" fill="#141414">V1 · H</text>
+
+      <rect x="78" y="0" width="82" height="24" rx="6" fill="#19B97F" stroke="#141414" stroke-width="1.5"/>
+      <text x="119" y="16" text-anchor="middle" fill="#141414">SURVIVES</text>
+
+      <rect x="242" y="0" width="98" height="24" rx="6" fill="#141414"/>
+      <text x="291" y="16" text-anchor="middle" fill="#FFFDF8">X-RAY ON</text>
+    </g>
+
+    <!-- Stylized Layer-Colored QR Grid -->
+    <g transform="translate(96, 54)">
+      <rect x="0" y="0" width="184" height="184" rx="10" fill="#F3EFE6" stroke="#141414" stroke-width="2.5"/>
+
+      <!-- Finder Eyes (Purple role color #6D28D9) -->
+      <g fill="none" stroke="#6D28D9" stroke-width="7">
+        <rect x="16" y="16" width="40" height="40" rx="3"/>
+        <rect x="128" y="16" width="40" height="40" rx="3"/>
+        <rect x="16" y="128" width="40" height="40" rx="3"/>
+      </g>
+      <g fill="#6D28D9">
+        <rect x="28" y="28" width="16" height="16" rx="2"/>
+        <rect x="140" y="28" width="16" height="16" rx="2"/>
+        <rect x="28" y="140" width="16" height="16" rx="2"/>
+      </g>
+
+      <!-- Timing Modules (Orange #EA580C) -->
+      <g fill="#EA580C">
+        <rect x="70" y="48" width="10" height="10" rx="2"/>
+        <rect x="90" y="48" width="10" height="10" rx="2"/>
+        <rect x="110" y="48" width="10" height="10" rx="2"/>
+        <rect x="48" y="70" width="10" height="10" rx="2"/>
+        <rect x="48" y="90" width="10" height="10" rx="2"/>
+        <rect x="48" y="110" width="10" height="10" rx="2"/>
+      </g>
+
+      <!-- Data Modules (Blue #2563EB) -->
+      <g fill="#2563EB">
+        <rect x="70" y="16" width="10" height="10" rx="2"/>
+        <rect x="86" y="28" width="10" height="10" rx="2"/>
+        <rect x="104" y="16" width="10" height="10" rx="2"/>
+        <rect x="70" y="70" width="10" height="10" rx="2"/>
+        <rect x="86" y="86" width="10" height="10" rx="2"/>
+        <rect x="104" y="70" width="10" height="10" rx="2"/>
+        <rect x="122" y="70" width="10" height="10" rx="2"/>
+        <rect x="140" y="86" width="10" height="10" rx="2"/>
+        <rect x="158" y="70" width="10" height="10" rx="2"/>
+        <rect x="70" y="104" width="10" height="10" rx="2"/>
+        <rect x="16" y="70" width="10" height="10" rx="2"/>
+        <rect x="32" y="86" width="10" height="10" rx="2"/>
+      </g>
+
+      <!-- Error Correction Modules (Green #16A34A) -->
+      <g fill="#16A34A">
+        <rect x="70" y="122" width="10" height="10" rx="2"/>
+        <rect x="86" y="138" width="10" height="10" rx="2"/>
+        <rect x="70" y="156" width="10" height="10" rx="2"/>
+        <rect x="104" y="122" width="10" height="10" rx="2"/>
+        <rect x="122" y="104" width="10" height="10" rx="2"/>
+        <rect x="140" y="122" width="10" height="10" rx="2"/>
+        <rect x="158" y="104" width="10" height="10" rx="2"/>
+        <rect x="104" y="156" width="10" height="10" rx="2"/>
+        <rect x="122" y="140" width="10" height="10" rx="2"/>
+        <rect x="156" y="156" width="10" height="10" rx="2"/>
+      </g>
+
+      <!-- Vandalised Pink Paint Stroke over Bottom-Right -->
+      <path d="M108 112 Q128 134 156 158 M160 112 Q132 138 106 162" stroke="#FF3D5A" stroke-width="14" stroke-linecap="round" opacity="0.92"/>
+      <!-- X-ray damaged codeword outline -->
+      <rect x="100" y="104" width="68" height="64" rx="6" fill="none" stroke="#FF3D5A" stroke-width="2.5" stroke-dasharray="6 4"/>
+    </g>
+
+    <!-- Live Damage Meter Preview -->
+    <g transform="translate(20, 252)">
+      <text x="0" y="12" font-family="'JetBrains Mono', ui-monospace, Consolas, monospace" font-size="11" font-weight="700" fill="#4B4844">DAMAGE METER</text>
+      <text x="336" y="12" text-anchor="end" font-family="'JetBrains Mono', ui-monospace, Consolas, monospace" font-size="11" font-weight="700" fill="#16A34A">6 / 8 REPAIRED ✓</text>
+
+      <!-- Meter Bar Background -->
+      <rect x="0" y="20" width="336" height="18" rx="6" fill="#E9E3D6" stroke="#141414" stroke-width="2"/>
+      <!-- 6 of 8 Filled Segments -->
+      <rect x="3" y="23" width="246" height="12" rx="4" fill="#FFD23F"/>
+      <!-- Segment dividers -->
+      <g stroke="#141414" stroke-width="1.5" opacity="0.35">
+        <line x1="42" y1="22" x2="42" y2="36"/>
+        <line x1="84" y1="22" x2="84" y2="36"/>
+        <line x1="126" y1="22" x2="126" y2="36"/>
+        <line x1="168" y1="22" x2="168" y2="36"/>
+        <line x1="210" y1="22" x2="210" y2="36"/>
+        <line x1="252" y1="22" x2="252" y2="36"/>
+        <line x1="294" y1="22" x2="294" y2="36"/>
+      </g>
+
+      <!-- Footer Check Line -->
+      <circle cx="6" cy="52" r="4" fill="#19B97F"/>
+      <text x="16" y="56" font-family="'JetBrains Mono', ui-monospace, Consolas, monospace" font-size="11" font-weight="600" fill="#141414">jsQR decoder: MATCH (323/323 verified)</text>
+    </g>
+  </g>
+</svg>

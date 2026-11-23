@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Break the QR Logo">
+  <defs>
+    <pattern id="dotGrid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="1.5" fill="#141414" fill-opacity="0.08"/>
+    </pattern>
+  </defs>
+
+  <!-- Hard neo-brutalist shadow -->
+  <rect x="28" y="28" width="468" height="468" rx="48" fill="#141414"/>
+
+  <!-- Main paper card -->
+  <rect x="16" y="16" width="468" height="468" rx="48" fill="#F3EFE6" stroke="#141414" stroke-width="14"/>
+  <rect x="23" y="23" width="454" height="454" rx="42" fill="url(#dotGrid)"/>
+
+  <!-- Subtle role-color accent dots in data area -->
+  <g opacity="0.9">
+    <rect x="218" y="80" width="24" height="24" rx="4" fill="#EA580C"/>
+    <rect x="218" y="128" width="24" height="24" rx="4" fill="#EA580C"/>
+    <rect x="218" y="176" width="24" height="24" rx="4" fill="#2563EB"/>
+    <rect x="80" y="218" width="24" height="24" rx="4" fill="#EA580C"/>
+    <rect x="128" y="218" width="24" height="24" rx="4" fill="#EA580C"/>
+    <rect x="176" y="218" width="24" height="24" rx="4" fill="#16A34A"/>
+    <rect x="218" y="218" width="24" height="24" rx="4" fill="#2563EB"/>
+    <rect x="266" y="218" width="24" height="24" rx="4" fill="#16A34A"/>
+    <rect x="218" y="266" width="24" height="24" rx="4" fill="#16A34A"/>
+    <rect x="218" y="314" width="24" height="24" rx="4" fill="#2563EB"/>
+    <rect x="218" y="362" width="24" height="24" rx="4" fill="#16A34A"/>
+  </g>
+
+  <!-- Three QR Finder Eyes -->
+  <g fill="none" stroke="#141414" stroke-width="24" stroke-linejoin="round">
+    <!-- Top-Left Finder -->
+    <rect x="74" y="74" width="118" height="118" rx="10"/>
+    <!-- Top-Right Finder -->
+    <rect x="308" y="74" width="118" height="118" rx="10"/>
+    <!-- Bottom-Left Finder -->
+    <rect x="74" y="308" width="118" height="118" rx="10"/>
+  </g>
+  <g fill="#141414">
+    <rect x="112" y="112" width="42" height="42" rx="6"/>
+    <rect x="346" y="112" width="42" height="42" rx="6"/>
+    <rect x="112" y="346" width="42" height="42" rx="6"/>
+  </g>
+
+  <!-- Bottom-Right Vandalised X Slash -->
+  <g stroke="#141414" stroke-width="40" stroke-linecap="round" transform="translate(8, 8)">
+    <path d="M294 294 L424 424"/>
+    <path d="M424 294 L294 424"/>
+  </g>
+  <g stroke="#FF3D5A" stroke-width="34" stroke-linecap="round">
+    <path d="M294 294 L424 424"/>
+    <path d="M424 294 L294 424"/>
+  </g>
+</svg>
